@@ -1,0 +1,751 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09090f">
+  <title>XXX VIDEO</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #09090f;
+      --panel: #14141e;
+      --panel2: #1d1d2b;
+      --text: #f5f5fb;
+      --muted: #a2a2b5;
+      --accent: #f43f83;
+      --border: #2d2d40;
+    }* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+button, input, textarea, select { font: inherit; }
+
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 9px;
+  padding: 11px 15px;
+  color: white;
+  background: var(--accent);
+  font-weight: 700;
+}
+
+button:disabled { opacity: .5; cursor: not-allowed; }
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  color: white;
+  background: #101019;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  outline: none;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent);
+}
+
+a { color: #ff79a8; }
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #0b0b13f2;
+  border-bottom: 1px solid var(--border);
+  padding: 15px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  backdrop-filter: blur(15px);
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.logo span { color: var(--accent); }
+
+nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+nav button {
+  background: transparent;
+  color: var(--muted);
+}
+
+nav button.active, nav button:hover {
+  color: white;
+  background: var(--panel2);
+}
+
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 24px 18px 60px;
+}
+
+.hero {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 30px;
+  background: linear-gradient(130deg, #35152b, #191529 55%, #11111b);
+  margin-bottom: 25px;
+}
+
+.hero h1 { font-size: clamp(28px, 5vw, 48px); margin: 0 0 10px; }
+.hero p { color: #d4c9d9; line-height: 1.6; max-width: 650px; }
+
+.notice {
+  padding: 12px 14px;
+  border-radius: 9px;
+  margin: 12px 0;
+  background: var(--panel2);
+  color: var(--muted);
+}
+
+.notice.error { color: #ff9ba7; }
+.notice.success { color: #90f0bd; }
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin: 18px 0;
+  flex-wrap: wrap;
+}
+
+.toolbar input { flex: 1 1 220px; }
+.toolbar select { width: auto; min-width: 140px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 17px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  overflow: hidden;
+}
+
+.thumb {
+  width: 100%;
+  aspect-ratio: 16/10;
+  background: #242435;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb .placeholder { font-size: 40px; }
+
+.card-body { padding: 13px; }
+.card h3 { margin: 0 0 8px; font-size: 16px; overflow-wrap: anywhere; }
+.card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.tag { font-size: 12px; color: #ff90b6; }
+
+.card-actions { display: flex; gap: 7px; margin-top: 12px; }
+.card-actions button { flex: 1; padding: 9px 6px; font-size: 12px; }
+.secondary { background: var(--panel2); }
+
+.section { margin-top: 25px; }
+.section h2 { font-size: 22px; }
+
+.auth-wrap {
+  max-width: 450px;
+  margin: 35px auto;
+  padding: 25px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--panel);
+}
+
+.auth-wrap h1 { margin-top: 0; }
+.field { margin: 14px 0; }
+.field label { display: block; margin-bottom: 7px; color: var(--muted); }
+.checkbox { display: flex; gap: 9px; align-items: flex-start; font-size: 13px; line-height: 1.5; }
+.checkbox input { width: auto; margin-top: 4px; }
+
+.hidden { display: none !important; }
+
+.player {
+  width: 100%;
+  max-height: 75vh;
+  background: black;
+  border-radius: 12px;
+}
+
+.admin-form {
+  display: grid;
+  gap: 10px;
+  max-width: 650px;
+  margin-bottom: 25px;
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 25px 15px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  header { align-items: flex-start; flex-direction: column; }
+  nav { width: 100%; }
+  nav button { padding: 9px; }
+  .hero { padding: 22px; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .card-body { padding: 10px; }
+  .card-actions { flex-direction: column; }
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">XXX <span>VIDEO</span></div>
+    <nav id="navigation">
+      <button data-view="home" class="active">Home</button>
+      <button data-view="favorites">Favorites</button>
+      <button data-view="history">History</button>
+      <button data-view="account">Account</button>
+      <button data-view="admin" id="adminNav" class="hidden">Admin</button>
+    </nav>
+  </header>  <main>
+    <section id="homeView">
+      <div class="hero">
+        <h1>Discover videos.</h1>
+        <p>Browse your video collection, search by title, and save favorites. Only add and watch videos you have permission to access.</p>
+        <button id="browseBtn">Browse collection</button>
+      </div>  <div class="toolbar">
+    <input id="search" type="search" placeholder="Search videos...">
+    <select id="category">
+      <option>All</option>
+    </select>
+    <button id="searchBtn">Search</button>
+  </div>
+
+  <div id="homeMessage" class="notice hidden"></div>
+  <div id="videoGrid" class="grid"></div>
+</section>
+
+<section id="favoritesView" class="hidden">
+  <h1>My Favorites</h1>
+  <div id="favoritesGrid" class="grid"></div>
+</section>
+
+<section id="historyView" class="hidden">
+  <h1>Watch History</h1>
+  <div id="historyGrid" class="grid"></div>
+</section>
+
+<section id="accountView" class="hidden">
+  <div class="auth-wrap" id="authPanel">
+    <h1 id="authTitle">Sign in</h1>
+    <p class="notice">You must meet the applicable legal age requirement to access adult-oriented material. The age confirmation below is self-declared and does not independently verify age.</p>
+    <div id="authMessage" class="notice hidden"></div>
+
+    <form id="authForm">
+      <div class="field">
+        <label for="email">Email address</label>
+        <input id="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" minlength="10" maxlength="128" autocomplete="current-password" required>
+      </div>
+
+      <label id="ageRow" class="checkbox hidden">
+        <input id="adultConfirmed" type="checkbox">
+        <span>I confirm that I meet the legal age requirement for this service.</span>
+      </label>
+
+      <button id="authSubmit" type="submit" style="width:100%;margin-top:15px">Sign in</button>
+    </form>
+
+    <p id="switchAuth">New here? <a href="#" id="switchAuthLink">Create an account</a></p>
+  </div>
+
+  <div id="profilePanel" class="auth-wrap hidden">
+    <h1>My Account</h1>
+    <p id="profileEmail"></p>
+    <p id="profileRole" class="notice"></p>
+    <button id="logoutBtn">Sign out</button>
+  </div>
+</section>
+
+<section id="adminView" class="hidden">
+  <h1>Administrator Dashboard</h1>
+  <p class="notice">Add video links that you own or have permission to distribute. Direct video links must be compatible with the browser's media player.</p>
+  <div id="adminMessage" class="notice hidden"></div>
+
+  <form id="videoForm" class="admin-form">
+    <input id="videoTitle" placeholder="Video title" maxlength="150" required>
+    <textarea id="videoDescription" placeholder="Description" maxlength="2000" rows="3"></textarea>
+    <input id="videoCategory" placeholder="Category" maxlength="60" value="Other">
+    <input id="videoThumbnail" type="url" placeholder="Thumbnail image URL (optional)">
+    <input id="videoUrl" type="url" placeholder="Direct video URL (HTTP/HTTPS)" required>
+    <button type="submit">Add video</button>
+  </form>
+
+  <h2>Manage videos</h2>
+  <div id="adminList"></div>
+</section>
+
+<section id="playerView" class="hidden">
+  <button id="backBtn" class="secondary">← Back</button>
+  <h1 id="playerTitle"></h1>
+  <video id="videoPlayer" class="player" controls playsinline preload="metadata"></video>
+  <p id="playerDescription"></p>
+  <p class="notice">If playback fails, the source may not support direct browser playback. Use a legitimate video host or a supported direct media URL.</p>
+  <button id="playerFavorite">♡ Add to favorites</button>
+  <a id="openVideoLink" target="_blank" rel="noopener noreferrer">Open source</a>
+</section>
+
+  </main>  <footer>XXX VIDEO · Use responsibly and respect content rights.</footer>  <script>
+    "use strict";
+
+    const $ = (id) => document.getElementById(id);
+    let currentUser = null;
+    let authMode = "login";
+    let currentVideo = null;
+    let lastView = "home";
+    let videosCache = [];
+
+    async function api(url, options = {}) {
+      const response = await fetch(url, {
+        credentials: "same-origin",
+        ...options,
+        headers: {
+          ...(options.body ? { "Content-Type": "application/json" } : {}),
+          ...(options.headers || {})
+        }
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || "Request failed.");
+      }
+
+      return data;
+    }
+
+    function showMessage(id, message, type = "") {
+      const element = $(id);
+      element.textContent = message;
+      element.className = "notice" + (type ? " " + type : "");
+      element.classList.remove("hidden");
+    }
+
+    function hideMessage(id) {
+      $(id).classList.add("hidden");
+    }
+
+    function showView(name) {
+      const views = ["home", "favorites", "history", "account", "admin", "player"];
+
+      for (const view of views) {
+        $(view + "View").classList.toggle("hidden", view !== name);
+      }
+
+      document.querySelectorAll("nav button[data-view]").forEach(button => {
+        button.classList.toggle("active", button.dataset.view === name);
+      });
+
+      if (name !== "player") lastView = name;
+
+      if (name === "home") loadVideos();
+      if (name === "favorites") loadFavorites();
+      if (name === "history") loadHistory();
+      if (name === "admin" && currentUser && currentUser.is_admin) loadAdmin();
+      if (name === "account") updateAccountView();
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function makeElement(tag, className, text) {
+      const element = document.createElement(tag);
+      if (className) element.className = className;
+      if (text !== undefined) element.textContent = text;
+      return element;
+    }
+
+    function safeImageUrl(value) {
+      try {
+        const url = new URL(value);
+        return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+      } catch {
+        return "";
+      }
+    }
+
+    function renderVideos(containerId, videos) {
+      const container = $(containerId);
+      container.replaceChildren();
+
+      if (!videos.length) {
+        container.append(makeElement("p", "notice", "No videos found."));
+        return;
+      }
+
+      for (const video of videos) {
+        const card = makeElement("article", "card");
+        const thumb = makeElement("div", "thumb");
+        const imageUrl = safeImageUrl(video.thumbnail);
+
+        if (imageUrl) {
+          const img = makeElement("img");
+          img.src = imageUrl;
+          img.alt = video.title;
+          img.loading = "lazy";
+          img.referrerPolicy = "no-referrer";
+          img.onerror = () => {
+            img.remove();
+            thumb.append(makeElement("span", "placeholder", "▶"));
+          };
+          thumb.append(img);
+        } else {
+          thumb.append(makeElement("span", "placeholder", "▶"));
+        }
+
+        const body = makeElement("div", "card-body");
+        body.append(makeElement("h3", "", video.title));
+        body.append(makeElement("span", "tag", video.category || "Other"));
+
+        if (video.description) {
+          body.append(makeElement("p", "", video.description));
+        }
+
+        const actions = makeElement("div", "card-actions");
+        const play = makeElement("button", "", "▶ Watch");
+        play.addEventListener("click", () => playVideo(video));
+
+        const favorite = makeElement("button", "secondary", "♡ Save");
+        favorite.addEventListener("click", () => toggleFavorite(video.id));
+
+        actions.append(play, favorite);
+        body.append(actions);
+        card.append(thumb, body);
+        container.append(card);
+      }
+    }
+
+    async function loadCategories() {
+      try {
+        const data = await api("/api/categories");
+        const select = $("category");
+        const previous = select.value;
+        select.replaceChildren();
+
+        for (const category of data.categories) {
+          const option = makeElement("option", "", category);
+          option.value = category;
+          select.append(option);
+        }
+
+        if (data.categories.includes(previous)) select.value = previous;
+      } catch (error) {
+        showMessage("homeMessage", error.message, "error");
+      }
+    }
+
+    async function loadVideos() {
+      try {
+        const search = $("search").value.trim();
+        const category = $("category").value || "All";
+        const params = new URLSearchParams({ search, category });
+        const data = await api("/api/videos?" + params.toString());
+        videosCache = data.videos;
+        renderVideos("videoGrid", data.videos);
+        hideMessage("homeMessage");
+      } catch (error) {
+        showMessage("homeMessage", error.message, "error");
+      }
+    }
+
+    async function toggleFavorite(id) {
+      if (!currentUser) {
+        showView("account");
+        showMessage("authMessage", "Sign in to save favorites.");
+        return;
+      }
+
+      try {
+        const result = await api("/api/favorites/" + id, { method: "POST" });
+        alert(result.favorited ? "Added to favorites." : "Removed from favorites.");
+
+        if (!result.favorited && $("favoritesView").classList.contains("hidden") === false) {
+          loadFavorites();
+        }
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function loadFavorites() {
+      if (!currentUser) {
+        $("favoritesGrid").replaceChildren(makeElement("p", "notice", "Sign in to see your favorites."));
+        return;
+      }
+
+      try {
+        const data = await api("/api/favorites");
+        renderVideos("favoritesGrid", data.videos);
+      } catch (error) {
+        $("favoritesGrid").replaceChildren(makeElement("p", "notice", error.message));
+      }
+    }
+
+    async function loadHistory() {
+      if (!currentUser) {
+        $("historyGrid").replaceChildren(makeElement("p", "notice", "Sign in to see your watch history."));
+        return;
+      }
+
+      try {
+        const data = await api("/api/history");
+        renderVideos("historyGrid", data.videos);
+      } catch (error) {
+        $("historyGrid").replaceChildren(makeElement("p", "notice", error.message));
+      }
+    }
+
+    async function playVideo(video) {
+      currentVideo = video;
+      $("playerTitle").textContent = video.title;
+      $("playerDescription").textContent = video.description || "";
+      $("videoPlayer").src = video.video_url;
+      $("openVideoLink").href = video.video_url;
+      $("playerFavorite").textContent = "♡ Add to favorites";
+
+      showView("player");
+
+      if (currentUser) {
+        api("/api/history/" + video.id, { method: "POST" }).catch(() => {});
+      }
+
+      try {
+        await $("videoPlayer").play();
+      } catch {
+        // Playback may require a manual tap or a compatible media URL.
+      }
+    }
+
+    function updateAccountView() {
+      $("authPanel").classList.toggle("hidden", Boolean(currentUser));
+      $("profilePanel").classList.toggle("hidden", !currentUser);
+
+      if (currentUser) {
+        $("profileEmail").textContent = "Email: " + currentUser.email;
+        $("profileRole").textContent = currentUser.is_admin ? "Administrator account" : "Standard account";
+        $("adminNav").classList.toggle("hidden", !currentUser.is_admin);
+      } else {
+        $("adminNav").classList.add("hidden");
+      }
+    }
+
+    function setAuthMode(mode) {
+      authMode = mode;
+      $("authTitle").textContent = mode === "login" ? "Sign in" : "Create account";
+      $("authSubmit").textContent = mode === "login" ? "Sign in" : "Create account";
+      $("switchAuth").firstChild.textContent =
+        mode === "login" ? "New here? " : "Already registered? ";
+
+      $("switchAuthLink").textContent =
+        mode === "login" ? "Create an account" : "Sign in";
+
+      $("ageRow").classList.toggle("hidden", mode === "login");
+      $("password").autocomplete = mode === "login" ? "current-password" : "new-password";
+      hideMessage("authMessage");
+    }
+
+    $("switchAuthLink").addEventListener("click", event => {
+      event.preventDefault();
+      setAuthMode(authMode === "login" ? "register" : "login");
+    });
+
+    $("authForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      hideMessage("authMessage");
+
+      try {
+        const body = {
+          email: $("email").value.trim(),
+          password: $("password").value
+        };
+
+        let endpoint = "/api/login";
+
+        if (authMode === "register") {
+          endpoint = "/api/register";
+          body.adultConfirmed = $("adultConfirmed").checked;
+        }
+
+        const data = await api(endpoint, {
+          method: "POST",
+          body: JSON.stringify(body)
+        });
+
+        currentUser = data.user;
+        $("password").value = "";
+        updateAccountView();
+        showMessage("authMessage", "Success. You are signed in.", "success");
+        await loadCategories();
+        showView("home");
+      } catch (error) {
+        showMessage("authMessage", error.message, "error");
+      }
+    });
+
+    $("logoutBtn").addEventListener("click", async () => {
+      try {
+        await api("/api/logout", { method: "POST" });
+      } catch {}
+
+      currentUser = null;
+      updateAccountView();
+      showView("home");
+    });
+
+    $("searchBtn").addEventListener("click", loadVideos);
+    $("search").addEventListener("keydown", event => {
+      if (event.key === "Enter") loadVideos();
+    });
+    $("category").addEventListener("change", loadVideos);
+    $("browseBtn").addEventListener("click", () => {
+      $("search").focus();
+      window.scrollTo({ top: 300, behavior: "smooth" });
+    });
+
+    document.querySelectorAll("nav button[data-view]").forEach(button => {
+      button.addEventListener("click", () => showView(button.dataset.view));
+    });
+
+    $("backBtn").addEventListener("click", () => {
+      $("videoPlayer").pause();
+      $("videoPlayer").removeAttribute("src");
+      $("videoPlayer").load();
+      showView(lastView === "player" ? "home" : lastView);
+    });
+
+    $("playerFavorite").addEventListener("click", () => {
+      if (currentVideo) toggleFavorite(currentVideo.id);
+    });
+
+    $("videoForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      hideMessage("adminMessage");
+
+      try {
+        const body = {
+          title: $("videoTitle").value.trim(),
+          description: $("videoDescription").value.trim(),
+          category: $("videoCategory").value.trim() || "Other",
+          thumbnail: $("videoThumbnail").value.trim(),
+          video_url: $("videoUrl").value.trim()
+        };
+
+        await api("/api/admin/videos", {
+          method: "POST",
+          body: JSON.stringify(body)
+        });
+
+        $("videoForm").reset();
+        $("videoCategory").value = "Other";
+        showMessage("adminMessage", "Video added successfully.", "success");
+        await loadAdmin();
+        await loadCategories();
+      } catch (error) {
+        showMessage("adminMessage", error.message, "error");
+      }
+    });
+
+    async function loadAdmin() {
+      const list = $("adminList");
+      list.replaceChildren();
+
+      try {
+        const data = await api("/api/admin/videos");
+
+        if (!data.videos.length) {
+          list.append(makeElement("p", "notice", "No videos have been added."));
+          return;
+        }
+
+        for (const video of data.videos) {
+          const row = makeElement("div", "notice");
+          const title = makeElement("strong", "", video.title);
+          const status = makeElement("span", "", video.active ? " — Active" : " — Hidden");
+          const toggle = makeElement("button", "secondary", video.active ? "Hide" : "Publish");
+          const remove = makeElement("button", "", "Delete");
+
+          toggle.style.margin = "8px";
+          remove.style.margin = "8px";
+
+          toggle.addEventListener("click", async () => {
+            try {
+              await api("/api/admin/videos/" + video.id, {
+                method: "PATCH",
+                body: JSON.stringify({ active: !Boolean(video.active) })
+              });
+              await loadAdmin();
+              await loadCategories();
+            } catch (error) {
+              showMessage("adminMessage", error.message, "error");
+            }
+          });
+
+          remove.addEventListener("click", async () => {
+            if (!confirm("Permanently delete this video?")) return;
+
+            try {
+              await api("/api/admin/videos/" + video.id, { method: "DELETE" });
+              await loadAdmin();
+              await loadCategories();
+            } catch (error) {
+              showMessage("adminMessage", error.message, "error");
+            }
+          });
+
+          row.append(title, status, toggle, remove);
+          list.append(row);
+        }
+      } catch (error) {
+        list.append(makeElement("p", "notice", error.message));
+      }
+    }
+
+    async function initialize() {
+      try {
+        const data = await api("/api/me");
+        currentUser = data.user;
+      } catch {
+        currentUser = null;
+      }
+
+      updateAccountView();
+      setAuthMode("login");
+      await loadCategories();
+      await loadVideos();
+    }
+
+    initialize();
+  </script></body>
+  </html>
