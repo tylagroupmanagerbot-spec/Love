@@ -1,751 +1,1115 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#09090f">
-  <title>XXX VIDEO</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #09090f;
-      --panel: #14141e;
-      --panel2: #1d1d2b;
-      --text: #f5f5fb;
-      --muted: #a2a2b5;
-      --accent: #f43f83;
-      --border: #2d2d40;
-    }* { box-sizing: border-box; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#09090f">
+    <title>XXX VIDEO</title>
 
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial, sans-serif;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-button, input, textarea, select { font: inherit; }
+        body {
+            background: #09090f;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
 
-button {
-  cursor: pointer;
-  border: 0;
-  border-radius: 9px;
-  padding: 11px 15px;
-  color: white;
-  background: var(--accent);
-  font-weight: 700;
-}
+        header {
+            background: #12121c;
+            padding: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #29293b;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
 
-button:disabled { opacity: .5; cursor: not-allowed; }
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ff3d83;
+        }
 
-input, textarea, select {
-  width: 100%;
-  padding: 12px;
-  color: white;
-  background: #101019;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  outline: none;
-}
+        nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
 
-input:focus, textarea:focus, select:focus {
-  border-color: var(--accent);
-}
+        button {
+            background: #ff3d83;
+            color: white;
+            border: none;
+            padding: 11px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
 
-a { color: #ff79a8; }
+        nav button {
+            background: transparent;
+            color: #ccccdd;
+        }
 
-header {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: #0b0b13f2;
-  border-bottom: 1px solid var(--border);
-  padding: 15px 5%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  backdrop-filter: blur(15px);
-}
+        nav button.active {
+            background: #28283a;
+            color: white;
+        }
 
-.logo {
-  font-size: 22px;
-  font-weight: 900;
-  letter-spacing: 1px;
-}
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 22px;
+        }
 
-.logo span { color: var(--accent); }
+        .hero {
+            background: linear-gradient(135deg, #41132f, #181528);
+            border: 1px solid #3a2946;
+            border-radius: 15px;
+            padding: 35px 25px;
+            margin-bottom: 25px;
+        }
 
-nav {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
 
-nav button {
-  background: transparent;
-  color: var(--muted);
-}
+        .hero p {
+            color: #dddded;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
 
-nav button.active, nav button:hover {
-  color: white;
-  background: var(--panel2);
-}
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
 
-main {
-  max-width: 1200px;
-  margin: auto;
-  padding: 24px 18px 60px;
-}
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #333349;
+            border-radius: 8px;
+            background: #151520;
+            color: white;
+            outline: none;
+        }
 
-.hero {
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 30px;
-  background: linear-gradient(130deg, #35152b, #191529 55%, #11111b);
-  margin-bottom: 25px;
-}
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #ff3d83;
+        }
 
-.hero h1 { font-size: clamp(28px, 5vw, 48px); margin: 0 0 10px; }
-.hero p { color: #d4c9d9; line-height: 1.6; max-width: 650px; }
+        h2 {
+            margin-bottom: 18px;
+        }
 
-.notice {
-  padding: 12px 14px;
-  border-radius: 9px;
-  margin: 12px 0;
-  background: var(--panel2);
-  color: var(--muted);
-}
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 18px;
+        }
 
-.notice.error { color: #ff9ba7; }
-.notice.success { color: #90f0bd; }
+        .video-card {
+            background: #151520;
+            border: 1px solid #29293b;
+            border-radius: 12px;
+            overflow: hidden;
+        }
 
-.toolbar {
-  display: flex;
-  gap: 10px;
-  margin: 18px 0;
-  flex-wrap: wrap;
-}
+        .thumbnail {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background: #242436;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
 
-.toolbar input { flex: 1 1 220px; }
-.toolbar select { width: auto; min-width: 140px; }
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 17px;
-}
+        .thumbnail span {
+            font-size: 40px;
+        }
 
-.card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  overflow: hidden;
-}
+        .video-info {
+            padding: 13px;
+        }
 
-.thumb {
-  width: 100%;
-  aspect-ratio: 16/10;
-  background: #242435;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
+        .video-info h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            overflow-wrap: anywhere;
+        }
 
-.thumb img { width: 100%; height: 100%; object-fit: cover; }
-.thumb .placeholder { font-size: 40px; }
+        .video-info p {
+            color: #aaaabc;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
 
-.card-body { padding: 13px; }
-.card h3 { margin: 0 0 8px; font-size: 16px; overflow-wrap: anywhere; }
-.card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
-.tag { font-size: 12px; color: #ff90b6; }
+        .category {
+            color: #ff78a8;
+            font-size: 12px;
+        }
 
-.card-actions { display: flex; gap: 7px; margin-top: 12px; }
-.card-actions button { flex: 1; padding: 9px 6px; font-size: 12px; }
-.secondary { background: var(--panel2); }
+        .actions {
+            display: flex;
+            gap: 7px;
+            margin-top: 12px;
+        }
 
-.section { margin-top: 25px; }
-.section h2 { font-size: 22px; }
+        .actions button {
+            flex: 1;
+            padding: 9px 5px;
+            font-size: 12px;
+        }
 
-.auth-wrap {
-  max-width: 450px;
-  margin: 35px auto;
-  padding: 25px;
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  background: var(--panel);
-}
+        .secondary {
+            background: #29293b;
+        }
 
-.auth-wrap h1 { margin-top: 0; }
-.field { margin: 14px 0; }
-.field label { display: block; margin-bottom: 7px; color: var(--muted); }
-.checkbox { display: flex; gap: 9px; align-items: flex-start; font-size: 13px; line-height: 1.5; }
-.checkbox input { width: auto; margin-top: 4px; }
+        .page {
+            display: none;
+        }
 
-.hidden { display: none !important; }
+        .page.active {
+            display: block;
+        }
 
-.player {
-  width: 100%;
-  max-height: 75vh;
-  background: black;
-  border-radius: 12px;
-}
+        .auth-box {
+            max-width: 430px;
+            margin: 30px auto;
+            background: #151520;
+            border: 1px solid #29293b;
+            border-radius: 14px;
+            padding: 25px;
+        }
 
-.admin-form {
-  display: grid;
-  gap: 10px;
-  max-width: 650px;
-  margin-bottom: 25px;
-}
+        .auth-box h2 {
+            margin-bottom: 10px;
+        }
 
-footer {
-  border-top: 1px solid var(--border);
-  text-align: center;
-  padding: 25px 15px;
-  color: var(--muted);
-  font-size: 12px;
-}
+        .auth-box p {
+            color: #aaaabc;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
 
-@media (max-width: 600px) {
-  header { align-items: flex-start; flex-direction: column; }
-  nav { width: 100%; }
-  nav button { padding: 9px; }
-  .hero { padding: 22px; }
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .card-body { padding: 10px; }
-  .card-actions { flex-direction: column; }
-}
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-  </style>
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccccdd;
+        }
+
+        .auth-box button {
+            width: 100%;
+        }
+
+        .checkbox-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .checkbox-row input {
+            width: auto;
+            margin-top: 3px;
+        }
+
+        .message {
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #252536;
+            border-radius: 8px;
+            color: #ffb0ca;
+            overflow-wrap: anywhere;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .video-player {
+            width: 100%;
+            max-height: 75vh;
+            background: #000000;
+            border-radius: 12px;
+            margin: 15px 0;
+        }
+
+        .admin-form {
+            display: grid;
+            gap: 12px;
+            max-width: 650px;
+            margin-bottom: 30px;
+        }
+
+        .admin-item {
+            background: #151520;
+            border: 1px solid #29293b;
+            padding: 13px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .admin-item button {
+            margin: 8px 5px 0 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 35px;
+            border-top: 1px solid #29293b;
+            color: #9999ad;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                width: 100%;
+            }
+
+            nav button {
+                padding: 9px;
+                font-size: 12px;
+            }
+
+            main {
+                padding: 15px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .search-box {
+                flex-wrap: wrap;
+            }
+
+            .search-box button {
+                width: 100%;
+            }
+
+            .video-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .video-info {
+                padding: 9px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <header>
-    <div class="logo">XXX <span>VIDEO</span></div>
-    <nav id="navigation">
-      <button data-view="home" class="active">Home</button>
-      <button data-view="favorites">Favorites</button>
-      <button data-view="history">History</button>
-      <button data-view="account">Account</button>
-      <button data-view="admin" id="adminNav" class="hidden">Admin</button>
+
+<header>
+    <div class="logo">XXX VIDEO</div>
+
+    <nav>
+        <button class="active" data-page="home">Home</button>
+        <button data-page="favorites">Favorites</button>
+        <button data-page="history">History</button>
+        <button data-page="account">Account</button>
+        <button id="adminNav" class="hidden" data-page="admin">Admin</button>
     </nav>
-  </header>  <main>
-    <section id="homeView">
-      <div class="hero">
-        <h1>Discover videos.</h1>
-        <p>Browse your video collection, search by title, and save favorites. Only add and watch videos you have permission to access.</p>
-        <button id="browseBtn">Browse collection</button>
-      </div>  <div class="toolbar">
-    <input id="search" type="search" placeholder="Search videos...">
-    <select id="category">
-      <option>All</option>
-    </select>
-    <button id="searchBtn">Search</button>
-  </div>
+</header>
 
-  <div id="homeMessage" class="notice hidden"></div>
-  <div id="videoGrid" class="grid"></div>
-</section>
+<main>
 
-<section id="favoritesView" class="hidden">
-  <h1>My Favorites</h1>
-  <div id="favoritesGrid" class="grid"></div>
-</section>
+    <section id="home" class="page active">
 
-<section id="historyView" class="hidden">
-  <h1>Watch History</h1>
-  <div id="historyGrid" class="grid"></div>
-</section>
+        <div class="hero">
+            <h1>Discover Videos</h1>
 
-<section id="accountView" class="hidden">
-  <div class="auth-wrap" id="authPanel">
-    <h1 id="authTitle">Sign in</h1>
-    <p class="notice">You must meet the applicable legal age requirement to access adult-oriented material. The age confirmation below is self-declared and does not independently verify age.</p>
-    <div id="authMessage" class="notice hidden"></div>
+            <p>
+                Welcome to XXX VIDEO. Search your video collection,
+                watch videos, and save your favorites in one place.
+            </p>
 
-    <form id="authForm">
-      <div class="field">
-        <label for="email">Email address</label>
-        <input id="email" type="email" autocomplete="email" required>
-      </div>
-      <div class="field">
-        <label for="password">Password</label>
-        <input id="password" type="password" minlength="10" maxlength="128" autocomplete="current-password" required>
-      </div>
+            <button onclick="document.getElementById('search').focus()">
+                Explore Videos
+            </button>
+        </div>
 
-      <label id="ageRow" class="checkbox hidden">
-        <input id="adultConfirmed" type="checkbox">
-        <span>I confirm that I meet the legal age requirement for this service.</span>
-      </label>
+        <div class="search-box">
+            <input
+                id="search"
+                type="search"
+                placeholder="Search videos..."
+            >
 
-      <button id="authSubmit" type="submit" style="width:100%;margin-top:15px">Sign in</button>
-    </form>
+            <select id="category">
+                <option value="All">All Categories</option>
+            </select>
 
-    <p id="switchAuth">New here? <a href="#" id="switchAuthLink">Create an account</a></p>
-  </div>
+            <button id="searchButton">Search</button>
+        </div>
 
-  <div id="profilePanel" class="auth-wrap hidden">
-    <h1>My Account</h1>
-    <p id="profileEmail"></p>
-    <p id="profileRole" class="notice"></p>
-    <button id="logoutBtn">Sign out</button>
-  </div>
-</section>
+        <div id="homeMessage" class="message hidden"></div>
 
-<section id="adminView" class="hidden">
-  <h1>Administrator Dashboard</h1>
-  <p class="notice">Add video links that you own or have permission to distribute. Direct video links must be compatible with the browser's media player.</p>
-  <div id="adminMessage" class="notice hidden"></div>
+        <h2>Video Collection</h2>
 
-  <form id="videoForm" class="admin-form">
-    <input id="videoTitle" placeholder="Video title" maxlength="150" required>
-    <textarea id="videoDescription" placeholder="Description" maxlength="2000" rows="3"></textarea>
-    <input id="videoCategory" placeholder="Category" maxlength="60" value="Other">
-    <input id="videoThumbnail" type="url" placeholder="Thumbnail image URL (optional)">
-    <input id="videoUrl" type="url" placeholder="Direct video URL (HTTP/HTTPS)" required>
-    <button type="submit">Add video</button>
-  </form>
+        <div id="videoGrid" class="video-grid"></div>
 
-  <h2>Manage videos</h2>
-  <div id="adminList"></div>
-</section>
+    </section>
 
-<section id="playerView" class="hidden">
-  <button id="backBtn" class="secondary">← Back</button>
-  <h1 id="playerTitle"></h1>
-  <video id="videoPlayer" class="player" controls playsinline preload="metadata"></video>
-  <p id="playerDescription"></p>
-  <p class="notice">If playback fails, the source may not support direct browser playback. Use a legitimate video host or a supported direct media URL.</p>
-  <button id="playerFavorite">♡ Add to favorites</button>
-  <a id="openVideoLink" target="_blank" rel="noopener noreferrer">Open source</a>
-</section>
+    <section id="favorites" class="page">
+        <h2>My Favorites</h2>
+        <div id="favoritesGrid" class="video-grid"></div>
+    </section>
 
-  </main>  <footer>XXX VIDEO · Use responsibly and respect content rights.</footer>  <script>
+    <section id="history" class="page">
+        <h2>Watch History</h2>
+        <div id="historyGrid" class="video-grid"></div>
+    </section>
+
+    <section id="account" class="page">
+
+        <div id="authPanel" class="auth-box">
+
+            <h2 id="authTitle">Sign In</h2>
+
+            <p>
+                Create an account or sign in to access your
+                favorites and watch history.
+            </p>
+
+            <div id="authMessage" class="message hidden"></div>
+
+            <form id="authForm">
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+
+                    <input
+                        id="email"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <input
+                        id="password"
+                        type="password"
+                        minlength="10"
+                        maxlength="128"
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <label id="ageRow" class="checkbox-row hidden">
+                    <input id="adultConfirmed" type="checkbox">
+
+                    <span>
+                        I confirm that I meet the legal age requirement
+                        for this service.
+                    </span>
+                </label>
+
+                <button id="authSubmit" type="submit">Sign In</button>
+
+            </form>
+
+            <p style="margin-top:18px">
+                <span id="switchText">New user?</span>
+                <a href="#" id="switchAuth">Create Account</a>
+            </p>
+
+        </div>
+
+        <div id="profilePanel" class="auth-box hidden">
+            <h2>My Account</h2>
+
+            <p id="profileEmail"></p>
+            <p id="profileRole"></p>
+
+            <button id="logoutButton">Sign Out</button>
+        </div>
+
+    </section>
+
+    <section id="admin" class="page">
+
+        <h2>Administrator Dashboard</h2>
+
+        <p class="message">
+            Add videos that you own or are authorized to distribute.
+        </p>
+
+        <div id="adminMessage" class="message hidden"></div>
+
+        <form id="videoForm" class="admin-form">
+
+            <input
+                id="videoTitle"
+                placeholder="Video Title"
+                maxlength="150"
+                required
+            >
+
+            <textarea
+                id="videoDescription"
+                placeholder="Video Description"
+                maxlength="2000"
+                rows="3"
+            ></textarea>
+
+            <input
+                id="videoCategory"
+                placeholder="Category"
+                maxlength="60"
+                value="Other"
+            >
+
+            <input
+                id="videoThumbnail"
+                type="url"
+                placeholder="Thumbnail Image URL (optional)"
+            >
+
+            <input
+                id="videoUrl"
+                type="url"
+                placeholder="Direct Video URL"
+                required
+            >
+
+            <button type="submit">Add Video</button>
+
+        </form>
+
+        <h2>Manage Videos</h2>
+
+        <div id="adminList"></div>
+
+    </section>
+
+    <section id="player" class="page">
+
+        <button id="backButton" class="secondary">Back</button>
+
+        <h2 id="playerTitle" style="margin-top:20px"></h2>
+
+        <video
+            id="videoPlayer"
+            class="video-player"
+            controls
+            playsinline
+            preload="metadata"
+        ></video>
+
+        <p id="playerDescription"></p>
+
+        <br>
+
+        <button id="playerFavorite">Add to Favorites</button>
+
+        <a
+            id="openVideoLink"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="margin-left:12px"
+        >
+            Open Source
+        </a>
+
+    </section>
+
+</main>
+
+<footer>
+    XXX VIDEO &copy; 2026. Use responsibly and respect content rights.
+</footer>
+
+<script>
     "use strict";
 
-    const $ = (id) => document.getElementById(id);
+    const $ = id => document.getElementById(id);
+
     let currentUser = null;
     let authMode = "login";
     let currentVideo = null;
-    let lastView = "home";
-    let videosCache = [];
+    let previousPage = "home";
 
     async function api(url, options = {}) {
-      const response = await fetch(url, {
-        credentials: "same-origin",
-        ...options,
-        headers: {
-          ...(options.body ? { "Content-Type": "application/json" } : {}),
-          ...(options.headers || {})
+        const response = await fetch(url, {
+            credentials: "same-origin",
+            ...options,
+            headers: {
+                ...(options.body
+                    ? { "Content-Type": "application/json" }
+                    : {}),
+                ...(options.headers || {})
+            }
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+            throw new Error(data.error || "Request failed.");
         }
-      });
 
-      const data = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(data.error || "Request failed.");
-      }
-
-      return data;
+        return data;
     }
 
-    function showMessage(id, message, type = "") {
-      const element = $(id);
-      element.textContent = message;
-      element.className = "notice" + (type ? " " + type : "");
-      element.classList.remove("hidden");
+    function message(id, text, type = "") {
+        const element = $(id);
+
+        element.textContent = text;
+        element.className = "message";
+
+        if (type === "error") {
+            element.style.color = "#ff8e9b";
+        } else if (type === "success") {
+            element.style.color = "#8df0b4";
+        } else {
+            element.style.color = "#ffb0ca";
+        }
+
+        element.classList.remove("hidden");
     }
 
     function hideMessage(id) {
-      $(id).classList.add("hidden");
+        $(id).classList.add("hidden");
     }
 
-    function showView(name) {
-      const views = ["home", "favorites", "history", "account", "admin", "player"];
+    function showPage(page) {
+        document.querySelectorAll(".page").forEach(section => {
+            section.classList.toggle("active", section.id === page);
+        });
 
-      for (const view of views) {
-        $(view + "View").classList.toggle("hidden", view !== name);
-      }
+        document.querySelectorAll("nav button[data-page]").forEach(button => {
+            button.classList.toggle("active", button.dataset.page === page);
+        });
 
-      document.querySelectorAll("nav button[data-view]").forEach(button => {
-        button.classList.toggle("active", button.dataset.view === name);
-      });
+        if (page !== "player") {
+            previousPage = page;
+        }
 
-      if (name !== "player") lastView = name;
+        if (page === "home") loadVideos();
+        if (page === "favorites") loadFavorites();
+        if (page === "history") loadHistory();
+        if (page === "account") updateAccount();
+        if (page === "admin" && currentUser?.is_admin) loadAdmin();
 
-      if (name === "home") loadVideos();
-      if (name === "favorites") loadFavorites();
-      if (name === "history") loadHistory();
-      if (name === "admin" && currentUser && currentUser.is_admin) loadAdmin();
-      if (name === "account") updateAccountView();
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function makeElement(tag, className, text) {
-      const element = document.createElement(tag);
-      if (className) element.className = className;
-      if (text !== undefined) element.textContent = text;
-      return element;
+    document.querySelectorAll("nav button[data-page]").forEach(button => {
+        button.addEventListener("click", () => {
+            showPage(button.dataset.page);
+        });
+    });
+
+    function element(tag, className, text) {
+        const item = document.createElement(tag);
+
+        if (className) item.className = className;
+        if (text !== undefined) item.textContent = text;
+
+        return item;
     }
 
-    function safeImageUrl(value) {
-      try {
-        const url = new URL(value);
-        return ["https:", "http:"].includes(url.protocol) ? url.href : "";
-      } catch {
-        return "";
-      }
+    function validImageUrl(value) {
+        try {
+            const url = new URL(value);
+
+            return ["http:", "https:"].includes(url.protocol)
+                ? url.href
+                : "";
+        } catch {
+            return "";
+        }
     }
 
     function renderVideos(containerId, videos) {
-      const container = $(containerId);
-      container.replaceChildren();
+        const container = $(containerId);
 
-      if (!videos.length) {
-        container.append(makeElement("p", "notice", "No videos found."));
-        return;
-      }
+        container.replaceChildren();
 
-      for (const video of videos) {
-        const card = makeElement("article", "card");
-        const thumb = makeElement("div", "thumb");
-        const imageUrl = safeImageUrl(video.thumbnail);
-
-        if (imageUrl) {
-          const img = makeElement("img");
-          img.src = imageUrl;
-          img.alt = video.title;
-          img.loading = "lazy";
-          img.referrerPolicy = "no-referrer";
-          img.onerror = () => {
-            img.remove();
-            thumb.append(makeElement("span", "placeholder", "▶"));
-          };
-          thumb.append(img);
-        } else {
-          thumb.append(makeElement("span", "placeholder", "▶"));
+        if (!videos.length) {
+            container.append(
+                element("p", "message", "No videos found.")
+            );
+            return;
         }
 
-        const body = makeElement("div", "card-body");
-        body.append(makeElement("h3", "", video.title));
-        body.append(makeElement("span", "tag", video.category || "Other"));
+        videos.forEach(video => {
+            const card = element("article", "video-card");
+            const thumbnail = element("div", "thumbnail");
+            const imageUrl = validImageUrl(video.thumbnail || "");
 
-        if (video.description) {
-          body.append(makeElement("p", "", video.description));
-        }
+            if (imageUrl) {
+                const image = element("img");
 
-        const actions = makeElement("div", "card-actions");
-        const play = makeElement("button", "", "▶ Watch");
-        play.addEventListener("click", () => playVideo(video));
+                image.src = imageUrl;
+                image.alt = video.title;
+                image.loading = "lazy";
+                image.referrerPolicy = "no-referrer";
 
-        const favorite = makeElement("button", "secondary", "♡ Save");
-        favorite.addEventListener("click", () => toggleFavorite(video.id));
+                image.onerror = () => {
+                    image.remove();
+                    thumbnail.append(element("span", "", "▶"));
+                };
 
-        actions.append(play, favorite);
-        body.append(actions);
-        card.append(thumb, body);
-        container.append(card);
-      }
+                thumbnail.append(image);
+            } else {
+                thumbnail.append(element("span", "", "▶"));
+            }
+
+            const info = element("div", "video-info");
+
+            info.append(element("h3", "", video.title));
+            info.append(element("span", "category", video.category || "Other"));
+
+            if (video.description) {
+                info.append(element("p", "", video.description));
+            }
+
+            const actions = element("div", "actions");
+
+            const watchButton = element("button", "", "▶ Watch");
+
+            watchButton.addEventListener("click", () => {
+                playVideo(video);
+            });
+
+            const favoriteButton = element(
+                "button",
+                "secondary",
+                "♡ Favorite"
+            );
+
+            favoriteButton.addEventListener("click", () => {
+                toggleFavorite(video.id);
+            });
+
+            actions.append(watchButton, favoriteButton);
+            info.append(actions);
+
+            card.append(thumbnail, info);
+            container.append(card);
+        });
     }
 
     async function loadCategories() {
-      try {
-        const data = await api("/api/categories");
-        const select = $("category");
-        const previous = select.value;
-        select.replaceChildren();
+        try {
+            const data = await api("/api/categories");
+            const select = $("category");
+            const oldValue = select.value;
 
-        for (const category of data.categories) {
-          const option = makeElement("option", "", category);
-          option.value = category;
-          select.append(option);
+            select.replaceChildren();
+
+            data.categories.forEach(category => {
+                const option = element("option", "", category);
+                option.value = category;
+                select.append(option);
+            });
+
+            if (data.categories.includes(oldValue)) {
+                select.value = oldValue;
+            }
+        } catch (error) {
+            message("homeMessage", error.message, "error");
         }
-
-        if (data.categories.includes(previous)) select.value = previous;
-      } catch (error) {
-        showMessage("homeMessage", error.message, "error");
-      }
     }
 
     async function loadVideos() {
-      try {
-        const search = $("search").value.trim();
-        const category = $("category").value || "All";
-        const params = new URLSearchParams({ search, category });
-        const data = await api("/api/videos?" + params.toString());
-        videosCache = data.videos;
-        renderVideos("videoGrid", data.videos);
-        hideMessage("homeMessage");
-      } catch (error) {
-        showMessage("homeMessage", error.message, "error");
-      }
+        try {
+            const params = new URLSearchParams({
+                search: $("search").value.trim(),
+                category: $("category").value || "All"
+            });
+
+            const data = await api("/api/videos?" + params.toString());
+
+            renderVideos("videoGrid", data.videos);
+            hideMessage("homeMessage");
+        } catch (error) {
+            message("homeMessage", error.message, "error");
+        }
     }
 
+    $("searchButton").addEventListener("click", loadVideos);
+
+    $("search").addEventListener("keydown", event => {
+        if (event.key === "Enter") loadVideos();
+    });
+
+    $("category").addEventListener("change", loadVideos);
+
     async function toggleFavorite(id) {
-      if (!currentUser) {
-        showView("account");
-        showMessage("authMessage", "Sign in to save favorites.");
-        return;
-      }
-
-      try {
-        const result = await api("/api/favorites/" + id, { method: "POST" });
-        alert(result.favorited ? "Added to favorites." : "Removed from favorites.");
-
-        if (!result.favorited && $("favoritesView").classList.contains("hidden") === false) {
-          loadFavorites();
+        if (!currentUser) {
+            showPage("account");
+            message("authMessage", "Please sign in to save favorites.");
+            return;
         }
-      } catch (error) {
-        alert(error.message);
-      }
+
+        try {
+            const result = await api("/api/favorites/" + id, {
+                method: "POST"
+            });
+
+            alert(
+                result.favorited
+                    ? "Added to favorites."
+                    : "Removed from favorites."
+            );
+
+            if ($("favorites").classList.contains("active")) {
+                loadFavorites();
+            }
+        } catch (error) {
+            alert(error.message);
+        }
     }
 
     async function loadFavorites() {
-      if (!currentUser) {
-        $("favoritesGrid").replaceChildren(makeElement("p", "notice", "Sign in to see your favorites."));
-        return;
-      }
+        if (!currentUser) {
+            $("favoritesGrid").replaceChildren(
+                element("p", "message", "Sign in to see your favorites.")
+            );
+            return;
+        }
 
-      try {
-        const data = await api("/api/favorites");
-        renderVideos("favoritesGrid", data.videos);
-      } catch (error) {
-        $("favoritesGrid").replaceChildren(makeElement("p", "notice", error.message));
-      }
+        try {
+            const data = await api("/api/favorites");
+
+            renderVideos("favoritesGrid", data.videos);
+        } catch (error) {
+            $("favoritesGrid").replaceChildren(
+                element("p", "message", error.message)
+            );
+        }
     }
 
     async function loadHistory() {
-      if (!currentUser) {
-        $("historyGrid").replaceChildren(makeElement("p", "notice", "Sign in to see your watch history."));
-        return;
-      }
+        if (!currentUser) {
+            $("historyGrid").replaceChildren(
+                element("p", "message", "Sign in to see your watch history.")
+            );
+            return;
+        }
 
-      try {
-        const data = await api("/api/history");
-        renderVideos("historyGrid", data.videos);
-      } catch (error) {
-        $("historyGrid").replaceChildren(makeElement("p", "notice", error.message));
-      }
+        try {
+            const data = await api("/api/history");
+
+            renderVideos("historyGrid", data.videos);
+        } catch (error) {
+            $("historyGrid").replaceChildren(
+                element("p", "message", error.message)
+            );
+        }
     }
 
     async function playVideo(video) {
-      currentVideo = video;
-      $("playerTitle").textContent = video.title;
-      $("playerDescription").textContent = video.description || "";
-      $("videoPlayer").src = video.video_url;
-      $("openVideoLink").href = video.video_url;
-      $("playerFavorite").textContent = "♡ Add to favorites";
+        currentVideo = video;
 
-      showView("player");
+        $("playerTitle").textContent = video.title;
+        $("playerDescription").textContent = video.description || "";
+        $("videoPlayer").src = video.video_url;
+        $("openVideoLink").href = video.video_url;
 
-      if (currentUser) {
-        api("/api/history/" + video.id, { method: "POST" }).catch(() => {});
-      }
+        showPage("player");
 
-      try {
-        await $("videoPlayer").play();
-      } catch {
-        // Playback may require a manual tap or a compatible media URL.
-      }
-    }
-
-    function updateAccountView() {
-      $("authPanel").classList.toggle("hidden", Boolean(currentUser));
-      $("profilePanel").classList.toggle("hidden", !currentUser);
-
-      if (currentUser) {
-        $("profileEmail").textContent = "Email: " + currentUser.email;
-        $("profileRole").textContent = currentUser.is_admin ? "Administrator account" : "Standard account";
-        $("adminNav").classList.toggle("hidden", !currentUser.is_admin);
-      } else {
-        $("adminNav").classList.add("hidden");
-      }
-    }
-
-    function setAuthMode(mode) {
-      authMode = mode;
-      $("authTitle").textContent = mode === "login" ? "Sign in" : "Create account";
-      $("authSubmit").textContent = mode === "login" ? "Sign in" : "Create account";
-      $("switchAuth").firstChild.textContent =
-        mode === "login" ? "New here? " : "Already registered? ";
-
-      $("switchAuthLink").textContent =
-        mode === "login" ? "Create an account" : "Sign in";
-
-      $("ageRow").classList.toggle("hidden", mode === "login");
-      $("password").autocomplete = mode === "login" ? "current-password" : "new-password";
-      hideMessage("authMessage");
-    }
-
-    $("switchAuthLink").addEventListener("click", event => {
-      event.preventDefault();
-      setAuthMode(authMode === "login" ? "register" : "login");
-    });
-
-    $("authForm").addEventListener("submit", async event => {
-      event.preventDefault();
-      hideMessage("authMessage");
-
-      try {
-        const body = {
-          email: $("email").value.trim(),
-          password: $("password").value
-        };
-
-        let endpoint = "/api/login";
-
-        if (authMode === "register") {
-          endpoint = "/api/register";
-          body.adultConfirmed = $("adultConfirmed").checked;
+        if (currentUser) {
+            api("/api/history/" + video.id, {
+                method: "POST"
+            }).catch(() => {});
         }
 
-        const data = await api(endpoint, {
-          method: "POST",
-          body: JSON.stringify(body)
-        });
+        try {
+            await $("videoPlayer").play();
+        } catch {
+            // Some browsers require the user to press Play.
+        }
+    }
 
-        currentUser = data.user;
-        $("password").value = "";
-        updateAccountView();
-        showMessage("authMessage", "Success. You are signed in.", "success");
-        await loadCategories();
-        showView("home");
-      } catch (error) {
-        showMessage("authMessage", error.message, "error");
-      }
-    });
+    $("backButton").addEventListener("click", () => {
+        $("videoPlayer").pause();
+        $("videoPlayer").removeAttribute("src");
+        $("videoPlayer").load();
 
-    $("logoutBtn").addEventListener("click", async () => {
-      try {
-        await api("/api/logout", { method: "POST" });
-      } catch {}
-
-      currentUser = null;
-      updateAccountView();
-      showView("home");
-    });
-
-    $("searchBtn").addEventListener("click", loadVideos);
-    $("search").addEventListener("keydown", event => {
-      if (event.key === "Enter") loadVideos();
-    });
-    $("category").addEventListener("change", loadVideos);
-    $("browseBtn").addEventListener("click", () => {
-      $("search").focus();
-      window.scrollTo({ top: 300, behavior: "smooth" });
-    });
-
-    document.querySelectorAll("nav button[data-view]").forEach(button => {
-      button.addEventListener("click", () => showView(button.dataset.view));
-    });
-
-    $("backBtn").addEventListener("click", () => {
-      $("videoPlayer").pause();
-      $("videoPlayer").removeAttribute("src");
-      $("videoPlayer").load();
-      showView(lastView === "player" ? "home" : lastView);
+        showPage(previousPage === "player" ? "home" : previousPage);
     });
 
     $("playerFavorite").addEventListener("click", () => {
-      if (currentVideo) toggleFavorite(currentVideo.id);
+        if (currentVideo) toggleFavorite(currentVideo.id);
+    });
+
+    function updateAccount() {
+        $("authPanel").classList.toggle("hidden", Boolean(currentUser));
+        $("profilePanel").classList.toggle("hidden", !currentUser);
+
+        $("adminNav").classList.toggle(
+            "hidden",
+            !currentUser || !currentUser.is_admin
+        );
+
+        if (currentUser) {
+            $("profileEmail").textContent = "Email: " + currentUser.email;
+
+            $("profileRole").textContent = currentUser.is_admin
+                ? "Administrator Account"
+                : "Standard Account";
+        }
+    }
+
+    function setAuthMode(mode) {
+        authMode = mode;
+
+        $("authTitle").textContent =
+            mode === "login" ? "Sign In" : "Create Account";
+
+        $("authSubmit").textContent =
+            mode === "login" ? "Sign In" : "Create Account";
+
+        $("switchText").textContent =
+            mode === "login" ? "New user? " : "Already registered? ";
+
+        $("switchAuth").textContent =
+            mode === "login" ? "Create Account" : "Sign In";
+
+        $("ageRow").classList.toggle("hidden", mode === "login");
+
+        $("password").autocomplete =
+            mode === "login" ? "current-password" : "new-password";
+
+        hideMessage("authMessage");
+    }
+
+    $("switchAuth").addEventListener("click", event => {
+        event.preventDefault();
+
+        setAuthMode(authMode === "login" ? "register" : "login");
+    });
+
+    $("authForm").addEventListener("submit", async event => {
+        event.preventDefault();
+
+        hideMessage("authMessage");
+
+        const body = {
+            email: $("email").value.trim(),
+            password: $("password").value
+        };
+
+        const endpoint = authMode === "login"
+            ? "/api/login"
+            : "/api/register";
+
+        if (authMode === "register") {
+            body.adultConfirmed = $("adultConfirmed").checked;
+        }
+
+        try {
+            const data = await api(endpoint, {
+                method: "POST",
+                body: JSON.stringify(body)
+            });
+
+            currentUser = data.user;
+
+            $("password").value = "";
+
+            updateAccount();
+
+            message("authMessage", "Successfully signed in.", "success");
+
+            await loadCategories();
+
+            showPage("home");
+        } catch (error) {
+            message("authMessage", error.message, "error");
+        }
+    });
+
+    $("logoutButton").addEventListener("click", async () => {
+        try {
+            await api("/api/logout", { method: "POST" });
+        } catch (error) {
+            console.error(error);
+        }
+
+        currentUser = null;
+
+        updateAccount();
+        showPage("home");
     });
 
     $("videoForm").addEventListener("submit", async event => {
-      event.preventDefault();
-      hideMessage("adminMessage");
+        event.preventDefault();
 
-      try {
+        hideMessage("adminMessage");
+
         const body = {
-          title: $("videoTitle").value.trim(),
-          description: $("videoDescription").value.trim(),
-          category: $("videoCategory").value.trim() || "Other",
-          thumbnail: $("videoThumbnail").value.trim(),
-          video_url: $("videoUrl").value.trim()
+            title: $("videoTitle").value.trim(),
+            description: $("videoDescription").value.trim(),
+            category: $("videoCategory").value.trim() || "Other",
+            thumbnail: $("videoThumbnail").value.trim(),
+            video_url: $("videoUrl").value.trim()
         };
 
-        await api("/api/admin/videos", {
-          method: "POST",
-          body: JSON.stringify(body)
-        });
+        try {
+            await api("/api/admin/videos", {
+                method: "POST",
+                body: JSON.stringify(body)
+            });
 
-        $("videoForm").reset();
-        $("videoCategory").value = "Other";
-        showMessage("adminMessage", "Video added successfully.", "success");
-        await loadAdmin();
-        await loadCategories();
-      } catch (error) {
-        showMessage("adminMessage", error.message, "error");
-      }
+            $("videoForm").reset();
+            $("videoCategory").value = "Other";
+
+            message("adminMessage", "Video added successfully.", "success");
+
+            await loadAdmin();
+            await loadCategories();
+        } catch (error) {
+            message("adminMessage", error.message, "error");
+        }
     });
 
     async function loadAdmin() {
-      const list = $("adminList");
-      list.replaceChildren();
+        const container = $("adminList");
 
-      try {
-        const data = await api("/api/admin/videos");
+        container.replaceChildren();
 
-        if (!data.videos.length) {
-          list.append(makeElement("p", "notice", "No videos have been added."));
-          return;
-        }
+        try {
+            const data = await api("/api/admin/videos");
 
-        for (const video of data.videos) {
-          const row = makeElement("div", "notice");
-          const title = makeElement("strong", "", video.title);
-          const status = makeElement("span", "", video.active ? " — Active" : " — Hidden");
-          const toggle = makeElement("button", "secondary", video.active ? "Hide" : "Publish");
-          const remove = makeElement("button", "", "Delete");
-
-          toggle.style.margin = "8px";
-          remove.style.margin = "8px";
-
-          toggle.addEventListener("click", async () => {
-            try {
-              await api("/api/admin/videos/" + video.id, {
-                method: "PATCH",
-                body: JSON.stringify({ active: !Boolean(video.active) })
-              });
-              await loadAdmin();
-              await loadCategories();
-            } catch (error) {
-              showMessage("adminMessage", error.message, "error");
+            if (!data.videos.length) {
+                container.append(
+                    element("p", "message", "No videos have been added.")
+                );
+                return;
             }
-          });
 
-          remove.addEventListener("click", async () => {
-            if (!confirm("Permanently delete this video?")) return;
+            data.videos.forEach(video => {
+                const item = element("div", "admin-item");
 
-            try {
-              await api("/api/admin/videos/" + video.id, { method: "DELETE" });
-              await loadAdmin();
-              await loadCategories();
-            } catch (error) {
-              showMessage("adminMessage", error.message, "error");
-            }
-          });
+                item.append(
+                    element(
+                        "strong",
+                        "",
+                        video.title + (video.active ? " — Active" : " — Hidden")
+                    )
+                );
 
-          row.append(title, status, toggle, remove);
-          list.append(row);
+                const toggle = element(
+                    "button",
+                    "secondary",
+                    video.active ? "Hide Video" : "Publish Video"
+                );
+
+                toggle.addEventListener("click", async () => {
+                    try {
+                        await api("/api/admin/videos/" + video.id, {
+                            method: "PATCH",
+                            body: JSON.stringify({
+                                active: !Boolean(video.active)
+                            })
+                        });
+
+                        await loadAdmin();
+                        await loadCategories();
+                    } catch (error) {
+                        message("adminMessage", error.message, "error");
+                    }
+                });
+
+                const remove = element("button", "", "Delete Video");
+
+                remove.addEventListener("click", async () => {
+                    if (!confirm("Permanently delete this video?")) return;
+
+                    try {
+                        await api("/api/admin/videos/" + video.id, {
+                            method: "DELETE"
+                        });
+
+                        await loadAdmin();
+                        await loadCategories();
+                    } catch (error) {
+                        message("adminMessage", error.message, "error");
+                    }
+                });
+
+                item.append(
+                    document.createElement("br"),
+                    toggle,
+                    remove
+                );
+
+                container.append(item);
+            });
+        } catch (error) {
+            container.append(element("p", "message", error.message));
         }
-      } catch (error) {
-        list.append(makeElement("p", "notice", error.message));
-      }
     }
 
     async function initialize() {
-      try {
-        const data = await api("/api/me");
-        currentUser = data.user;
-      } catch {
-        currentUser = null;
-      }
+        try {
+            const data = await api("/api/me");
+            currentUser = data.user;
+        } catch {
+            currentUser = null;
+        }
 
-      updateAccountView();
-      setAuthMode("login");
-      await loadCategories();
-      await loadVideos();
+        updateAccount();
+        setAuthMode("login");
+
+        await loadCategories();
+        await loadVideos();
     }
 
     initialize();
-  </script></body>
+</script>
+
+</body>
   </html>
