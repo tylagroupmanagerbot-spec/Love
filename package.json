@@ -1,0 +1,20 @@
+{
+"name": "xxx-video",
+"version": "1.0.0",
+"description": "XXX Video streaming dashboard",
+"main": "index.js",
+"scripts": {
+"start": "node index.js"
+},
+"engines": {
+"node": ">=20"
+},
+"dependencies": {
+"bcryptjs": "^2.4.3",
+"better-sqlite3": "^11.10.0",
+"connect-sqlite3": "^0.9.16",
+"express": "^5.1.0",
+"express-session": "^1.18.2",
+"helmet": "^8.1.0"
+}
+}
