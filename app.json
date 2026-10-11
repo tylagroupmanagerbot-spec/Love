@@ -1,0 +1,6 @@
+{
+  "name": "Baldwin iv x sultan Saladi Bot",
+  "description": "Pairing code only - Simon tech inc - 09166265317",
+  "stack": "heroku-22",
+  "env": { "PHONE_NUMBER": { "description": "2349166265317", "value": "2349166265317" } }
+}

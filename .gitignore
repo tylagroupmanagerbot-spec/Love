@@ -1,17 +1,5 @@
 node_modules/
+npm-debug.log
 .env
-.env.*
-!.env.example
-
-data.sqlite
-data.sqlite-shm
-data.sqlite-wal
-
-sessions.sqlite
-sessions.sqlite-shm
-sessions.sqlite-wal
-
-npm-debug.log*
 .DS_Store
-Thumbs.db
-coverage/
+# session is tracked for hosting

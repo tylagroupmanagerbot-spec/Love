@@ -1,0 +1,9 @@
+services:
+    - type: web
+    name: baldwin-saladi-bot
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+            - key: PHONE_NUMBER
+        value: 2349166265317

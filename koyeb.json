@@ -1,0 +1,4 @@
+{
+  "name": "baldwin-saladi-bot",
+  "env": [{ "key": "PHONE_NUMBER", "value": "2349166265317" }]
+}
